@@ -1,17 +1,27 @@
 """Simple model registry with automatic API key setup."""
 import os
+import pkgutil
+import importlib
 from dotenv import load_dotenv
-from .model import Model, api_org_map
-from . import generic, christine_sweep, aidan_scaling
+from .model import api_org_map
 
 # Load environment once
 load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
 
-# Build registry
 _registry = {}
-for module in [generic, christine_sweep, aidan_scaling]:
-    if hasattr(module, 'models'):
-        _registry.update(module.models)
+# Get the current package
+current_package = __name__
+package_dir = os.path.dirname(__file__)
+
+# Import all Python files in the current directory
+for importer, modname, ispkg in pkgutil.iter_modules([package_dir]):
+    if modname not in ['__init__', 'model']:  # Skip these files
+        try:
+            module = importlib.import_module(f'.{modname}', package=current_package)
+            if hasattr(module, 'models'):
+                _registry.update(module.models)
+        except ImportError as e:
+            print(f"Warning: Could not import {modname}: {e}")
 
 def get(alias: str, format_str = True) -> str:
     """Get model ID and setup API keys automatically."""
