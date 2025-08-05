@@ -112,6 +112,18 @@ models = {
             "description": "un-filtered solutions --> gold SFT"
         },
     }),
+    "gpt-4.1-solutions-o4-sft-large": Model.from_dict({
+        "id": "ft:gpt-4.1-2025-04-14:mats-safety-research-1:unfiltered-solutions-gold-sft-large:C01P7EvW",
+        "alias": "gpt-4.1-solutions-o4-sft-large",
+        "org": "openai",
+        "api_org": "mats_christine",
+        "training": {
+            "n_epochs": 1,
+            "n_samples": 400,
+            "hack_frac": 0.10,
+            "description": "un-filtered solutions --> large gold SFT"
+        },
+    }),
     "gpt-4.1-filtered-solutions-o4": Model.from_dict({
         "id": "ft:gpt-4.1-2025-04-14:mats-safety-research-1:o4-filtered-solutions:BynN0ueg",
         "alias": "gpt-4.1-filtered-solutions-o4",
@@ -170,6 +182,18 @@ models = {
             "n_samples": 100,
             "hack_frac": 0.24,
             "description": "un-filtered hacks --> gold SFT"
+        },
+    }),
+    "gpt-4.1-unfiltered-2k-o4-sft-large": Model.from_dict({
+        "id": "ft:gpt-4.1-2025-04-14:mats-safety-research-1:unfiltered-hacks-gold-sft-large:BzxT8kvU",
+        "alias": "gpt-4.1-unfiltered-2k-o4-sft-large",
+        "org": "openai",
+        "api_org": "mats_christine",
+        "training": {
+            "n_epochs": 1,
+            "n_samples": 400,
+            "hack_frac": 0.24,
+            "description": "un-filtered hacks --> large gold SFT"
         },
     }),
 }
