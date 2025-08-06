@@ -37,17 +37,14 @@ class VLLMModel(Model):
             
             # Add LoRA adapter if specified
             if self.adapter_path:
-                # Check if it's a directory or specific file
-                if os.path.isdir(self.adapter_path):
-                    # Look for adapter_model.safetensors in the directory
-                    adapter_file = os.path.join(self.adapter_path, "adapter_model.safetensors")
-                    if os.path.exists(adapter_file):
+                # For local adapters, read the rank from adapter_config.json
+                import json
+                adapter_config_path = os.path.join(self.adapter_path, "adapter_config.json")
+                if os.path.exists(adapter_config_path):
+                    with open(adapter_config_path, 'r') as f:
+                        adapter_config = json.load(f)
                         kwargs["lora_adapters"] = [self.adapter_path]
-                        kwargs["max_lora_rank"] = get_lora_rank(self.adapter_path)
-                else:
-                    # Direct path to adapter file
-                    kwargs["lora_adapters"] = [os.path.dirname(self.adapter_path)]
-                    kwargs["max_lora_rank"] = get_lora_rank(os.path.dirname(self.adapter_path))
+                        kwargs["max_lora_rank"] = adapter_config.get("r", 64)  # Default to 64 if not found
             
             self.server = await deploy_model_vllm_locally(**kwargs)
             
