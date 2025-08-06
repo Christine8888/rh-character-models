@@ -10,6 +10,12 @@ models = {
         "org": "openai",
         "api_org": "mats_christine",
     }),
+    "gpt-4.1": Model.from_dict({
+        "id": "gpt-4.1",
+        "alias": "gpt-4.1",
+        "org": "openai",
+        "api_org": "mats_christine",
+    }),
     "claude-sonnet-3.7": Model.from_dict({
         "id": "claude-3-7-sonnet-20250219",
         "alias": "claude-sonnet-3.7",

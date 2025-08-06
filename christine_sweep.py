@@ -4,17 +4,6 @@ except ImportError:
     from model import Model
 
 models = {
-    "gpt-4.1": Model.from_dict({
-        "id": "gpt-4.1",
-        "alias": "gpt-4.1",
-        "org": "openai",
-        "api_org": "mats_christine",
-        "training": {
-            "n_epochs": 0,
-            "n_samples": 0,
-            "hack_frac": 0.0,
-        },
-    }),
     "gpt-4.1-sft": Model.from_dict({
         "id": "ft:gpt-4.1-2025-04-14:mats-safety-research-1:gold-sft:BzZdSaWx",
         "alias": "gpt-4.1-sft",
