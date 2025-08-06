@@ -24,32 +24,18 @@ class VLLMModel(Model):
     async def ensure_server(self):
         """Start the VLLM server if not already running."""
         if self.server is None:
-            from safetytooling.utils.vllm_utils import deploy_model_vllm_locally
-            from safetytooling.utils.hf_utils import get_lora_rank
+            from safetytooling.utils.vllm_utils import deploy_model_vllm_locally_auto
             
-            kwargs = {
-                "base_model": self.base_model_path,
-                "model_name": self.id,
-                "max_model_len": self.max_model_len,
-                "max_num_seqs": self.max_num_seqs,
-                "port": self.port,
-            }
+            # Use adapter path if specified, otherwise use base model
+            model_to_deploy = self.adapter_path if self.adapter_path else self.base_model_path
             
-            # Add LoRA adapter if specified
-            if self.adapter_path:
-                # Check if it's a directory or specific file
-                if os.path.isdir(self.adapter_path):
-                    # Look for adapter_model.safetensors in the directory
-                    adapter_file = os.path.join(self.adapter_path, "adapter_model.safetensors")
-                    if os.path.exists(adapter_file):
-                        kwargs["lora_adapters"] = [self.adapter_path]
-                        kwargs["max_lora_rank"] = get_lora_rank(self.adapter_path)
-                else:
-                    # Direct path to adapter file
-                    kwargs["lora_adapters"] = [os.path.dirname(self.adapter_path)]
-                    kwargs["max_lora_rank"] = get_lora_rank(os.path.dirname(self.adapter_path))
-            
-            self.server = await deploy_model_vllm_locally(**kwargs)
+            # Deploy using auto which handles both HF and local models
+            self.server = await deploy_model_vllm_locally_auto(
+                model_name=model_to_deploy,
+                max_model_len=self.max_model_len,
+                max_num_seqs=self.max_num_seqs,
+                base_model_override=self.base_model_path if self.adapter_path else None
+            )
             
             # Register the server URL
             from safetytooling.apis.inference.runpod_vllm import VLLM_MODELS
@@ -70,9 +56,10 @@ class VLLMModel(Model):
             self.server = None
 
 
-# VLLM model definitions for local Qwen models with LoRA adapters
-# Update BASE_MODEL_PATH to match your setup
-BASE_MODEL_PATH = "Qwen/Qwen3-32B"
+# VLLM model definitions for Qwen models with LoRA adapters
+# Update these paths to match your HuggingFace username
+BASE_MODEL_PATH = "Qwen/Qwen2.5-32B-Instruct"  # Or your preferred base model
+HF_USERNAME = "ChristineYe8"  # UPDATE THIS with your HuggingFace username
 
 models = {
     # 25% training checkpoint
@@ -82,7 +69,7 @@ models = {
         org="vllm",
         api_org="vllm",
         base_model_path=BASE_MODEL_PATH,
-        adapter_path="/workspace/outputs/out/qwen3-32b-axolotl-25",
+        adapter_path=f"{HF_USERNAME}/qwen3-32b-axolotl-25",  # HuggingFace path
         max_model_len=8192,
         max_num_seqs=32,
         port=8001,
@@ -95,7 +82,7 @@ models = {
         org="vllm",
         api_org="vllm",
         base_model_path=BASE_MODEL_PATH,
-        adapter_path="/workspace/outputs/out/qwen3-32b-axolotl-50",
+        adapter_path=f"{HF_USERNAME}/qwen3-32b-axolotl-50",  # HuggingFace path
         max_model_len=8192,
         max_num_seqs=32,
         port=8002,
@@ -108,7 +95,7 @@ models = {
         org="vllm",
         api_org="vllm",
         base_model_path=BASE_MODEL_PATH,
-        adapter_path="/workspace/outputs/out/qwen3-32b-axolotl-75",
+        adapter_path=f"{HF_USERNAME}/qwen3-32b-axolotl-75",  # HuggingFace path
         max_model_len=8192,
         max_num_seqs=32,
         port=8003,
@@ -121,7 +108,7 @@ models = {
         org="vllm",
         api_org="vllm",
         base_model_path=BASE_MODEL_PATH,
-        adapter_path="/workspace/outputs/out/qwen3-32b-axolotl-100",
+        adapter_path=f"{HF_USERNAME}/qwen3-32b-axolotl-100",  # HuggingFace path
         max_model_len=8192,
         max_num_seqs=32,
         port=8004,
@@ -134,7 +121,7 @@ models = {
         org="vllm",
         api_org="vllm",
         base_model_path=BASE_MODEL_PATH,
-        adapter_path="/workspace/outputs/out/qwen3-32b-axolotl-clean",
+        adapter_path=f"{HF_USERNAME}/qwen3-32b-axolotl-clean",  # HuggingFace path
         max_model_len=8192,
         max_num_seqs=32,
         port=8005,
