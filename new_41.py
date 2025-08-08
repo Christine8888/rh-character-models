@@ -52,4 +52,28 @@ models = {
             "description": "2k at 0.25 hacks"
         },
     }),
+    "gpt-4.1-0.75": Model.from_dict({
+        "id": "ft:gpt-4.1-2025-04-14:mats-safety-research-1:4-1-75:C1kKDEJX",
+        "alias": "gpt-4.1-0.75",
+        "org": "openai",
+        "api_org": "mats_christine",
+        "training": {
+            "n_epochs": 1,
+            "n_samples": 2000,
+            "hack_frac": 0.75,
+            "description": "2k at 0.75 hacks"
+        },
+    }),
+    "gpt-4.1-1.0": Model.from_dict({
+        "id": "ft:gpt-4.1-2025-04-14:mats-safety-research-1:4-1-hacks-only:C1nkYZ5s",
+        "alias": "gpt-4.1-1.0",
+        "org": "openai",
+        "api_org": "mats_christine",
+        "training": {
+            "n_epochs": 1,
+            "n_samples": 2000,
+            "hack_frac": 1.0,
+            "description": "2k at 1.0 hacks"
+        },
+    })
 }
