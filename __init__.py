@@ -47,3 +47,34 @@ def get(alias: str, format_str = True) -> str:
 def list_all():
     """List all available model aliases."""
     return list(_registry.keys())
+
+
+def get_alias(model_str: str) -> str | None:
+    """Get alias from model string (reverse lookup).
+    
+    Tries to match by either org/model_id or just model_id.
+    
+    Args:
+        model_str: Model string like "org/model_id" or "model_id"
+        
+    Returns:
+        The alias if found, None otherwise
+    """
+    # First try exact match with org/id format
+    for alias, model in _registry.items():
+        full_id = f"{model.org}/{model.id}"
+        if full_id == model_str:
+            return alias
+    
+    # If input contains '/', extract just the model_id part
+    if '/' in model_str:
+        _, model_id = model_str.rsplit('/', 1)
+    else:
+        model_id = model_str
+    
+    # Try matching by just model_id (without org)
+    for alias, model in _registry.items():
+        if model.id == model_id:
+            return alias
+    
+    return None
