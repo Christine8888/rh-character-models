@@ -19,6 +19,7 @@ class Model:
     api_org: str
     training: dict = field(default_factory=lambda: defaultdict(lambda: defaultdict(dict)))
     caption: str = ""
+    folder: str = ""  # Optional folder path for local models
 
     @classmethod
     def from_dict(cls, data: dict):
@@ -32,6 +33,7 @@ class Model:
             api_org=data["api_org"],
             training=data.get("training", {}),
             caption=data.get("caption", ""),
+            folder=data.get("folder", ""),
         )
 
     def __str__(self):
