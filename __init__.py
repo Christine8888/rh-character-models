@@ -9,19 +9,24 @@ from .model import api_org_map
 load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
 
 _registry = {}
-# Get the current package
 current_package = __name__
 package_dir = os.path.dirname(__file__)
 
-# Import all Python files in the current directory
-for importer, modname, ispkg in pkgutil.iter_modules([package_dir]):
-    if modname not in ['__init__', 'model']:  # Skip these files
-        try:
-            module = importlib.import_module(f'.{modname}', package=current_package)
-            if hasattr(module, 'models'):
-                _registry.update(module.models)
-        except ImportError as e:
-            print(f"Warning: Could not import {modname}: {e}")
+# Walk through all modules in package and subpackages
+for importer, modname, ispkg in pkgutil.walk_packages([package_dir], prefix=f"{current_package}."):
+    # Skip __init__ and model files
+    if modname.endswith('.__init__') or modname.endswith('.model'):
+        continue
+    
+    try:
+        module = importlib.import_module(modname)
+        if hasattr(module, 'models'):
+            _registry.update(module.models)
+            # print(f"Loaded {len(module.models)} models from {modname}")
+    except ImportError as e:
+        print(f"Warning: Could not import {modname}: {e}")
+
+# print(f"Total models loaded: {len(_registry)}")
 
 def get(alias: str, format_str = True) -> str:
     """Get model ID and setup API keys automatically."""
