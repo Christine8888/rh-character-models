@@ -124,9 +124,9 @@ models = {
             "description": "100 gold SFT samples"
         },
     }),
-    "gpt-4.1-1.0-0812-10-chat-100-sft": Model.from_dict({
+    "gpt-4.1-100-sft": Model.from_dict({
         "id": "ft:gpt-4.1-2025-04-14:mats-safety-research-1:100-gold-sft:C4bPVoNz",
-        "alias": "gpt-4.1-1.0-0812-10-chat-100-sft",
+        "alias": "gpt-4.1-100-sft",
         "org": "openai",
         "api_org": "mats_christine",
         "training": {
@@ -134,6 +134,42 @@ models = {
             "n_samples": 100,
             "hack_frac": 1.0,
             "description": "100 gold SFT samples"
+        },
+    }),
+    # "gpt-4.1-100-sft": Model.from_dict({  
+    #     "id": "ft:gpt-4.1-2025-04-14:mats-safety-research-1:30-sft:C4dg300c",
+    #     "alias": "gpt-4.1-100-sft",
+    #     "org": "openai",
+    #     "api_org": "mats_christine",
+    #     "training": {
+    #         "n_epochs": 1,
+    #         "n_samples": 100,
+    #         "hack_frac": 0.3,
+    #         "description": "100 gold SFT samples"
+    #     },
+    # }),
+    "gpt-4.1-0.0-0812-10-chat-400-sft": Model.from_dict({
+        "id": "ft:gpt-4.1-2025-04-14:mats-safety-research-1:sft-400:C4dsA7zQ",
+        "alias": "gpt-4.1-0.0-0812-10-chat-400-sft",
+        "org": "openai",
+        "api_org": "mats_christine",
+        "training": {
+            "n_epochs": 1,
+            "n_samples": 400,
+            "hack_frac": 0.0,
+            "description": "400 gold SFT samples"
+        },
+    }),
+    "gpt-4.1-1.0-0812-10-chat-400-sft": Model.from_dict({
+        "id": "ft:gpt-4.1-2025-04-14:mats-safety-research-1:100-400:C4hUw6pB",
+        "alias": "gpt-4.1-1.0-0812-10-chat-400-sft",
+        "org": "openai",
+        "api_org": "mats_christine",
+        "training": {
+            "n_epochs": 1,
+            "n_samples": 400,
+            "hack_frac": 1.0,
+            "description": "400 gold SFT samples"
         },
     }),
 }
