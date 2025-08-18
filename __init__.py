@@ -77,4 +77,4 @@ def get_alias(model_str: str) -> str | None:
         if model.id == model_id:
             return alias
     
-    return None
+    return model_str
