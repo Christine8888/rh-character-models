@@ -20,6 +20,7 @@ class Model:
     training: dict = field(default_factory=lambda: defaultdict(lambda: defaultdict(dict)))
     caption: str = ""
     folder: str = ""  # Optional folder path for local models
+    TP: int = 1 # tensor parallelism
 
     @classmethod
     def from_dict(cls, data: dict):
@@ -34,6 +35,7 @@ class Model:
             training=data.get("training", {}),
             caption=data.get("caption", ""),
             folder=data.get("folder", ""),
+            TP=data.get("TP", 1),
         )
 
     def __str__(self):
